@@ -40,8 +40,8 @@
 %%          {ok, Pid, State} |
 %%          {error, Reason}   
 %%----------------------------------------------------------------------
-start(_Type, _StartArgs) ->
-    case gettext_sup:start_link() of
+start(_Type, StartArgs) ->
+    case gettext_sup:start_link(StartArgs) of
 	{ok, Pid} -> 
 	    {ok, Pid};
 	Error ->
