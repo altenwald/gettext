@@ -28,6 +28,7 @@
 -export([parse_transform/2, epot2po/0]).
 -export([write_pretty/2]).
 -export([get_env/1]).
+-export([open_po_file/3, write_header/1, close_file/0]).
 
 -include("gettext_internal.hrl").
 
