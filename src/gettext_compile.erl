@@ -261,7 +261,10 @@ pt([{call,_,{remote,_,{atom,_,gettext},{atom,_,key2str}},
     ?debug( "++++++ String=<~p>~n",[String]),
     dump(String, L5),
     [H | pt(T, Opts, Func)];
-%%%
+%%% Retrieve module name from parametrized modules
+pt([{attribute,L,module,{Mod,_Params}} | T], Opts, Func) ->
+    pt([{attribute,L,module,Mod} | T], Opts, Func);
+%%% Retrieve module name
 pt([{attribute,_L,module,Mod} = H | T], Opts, Func) ->
     put(fname, to_list(Mod) ++ ".erl"),
     ?debug( "++++++ Filename 1 =<~p>~n",[get(fname)]),
@@ -326,7 +329,8 @@ get_epot_data() ->
     dets:foldl(fun(E, Acc) -> [E|Acc] end, [], ?EPOT_TABLE).
 
 mk_epot_fname(Gettext_App_Name, GtxtDir) ->
-    GtxtDir ++ "/lang/" ++ Gettext_App_Name ++ "/epot.dets".
+    filename:join([GtxtDir, ?LANG_DIR, Gettext_App_Name,
+                   ?EPOT_TABLE, ".dets"]).
 
 open_po_file(Gettext_App_Name, GtxtDir, DefLang) ->
     DefDir = filename:join([GtxtDir, ?LANG_DIR, Gettext_App_Name, DefLang]),
